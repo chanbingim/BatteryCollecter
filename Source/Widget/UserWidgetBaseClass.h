@@ -21,4 +21,7 @@ class WIDGET_API UUserWidgetBaseClass : public UUserWidget
 {
 	GENERATED_BODY()
 	
+protected :
+	virtual void NativeOnInitialized() override;
+	virtual void NativeConstruct() override;
 };

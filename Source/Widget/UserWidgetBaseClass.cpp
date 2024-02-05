@@ -3,3 +3,16 @@
 
 #include "UserWidgetBaseClass.h"
 
+void UUserWidgetBaseClass::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
+
+
+}
+
+void UUserWidgetBaseClass::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+
+}

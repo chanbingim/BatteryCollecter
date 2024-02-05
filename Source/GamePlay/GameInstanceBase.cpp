@@ -2,4 +2,10 @@
 
 
 #include "GameInstanceBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "MultiGameModeBase.h"
 
+void UGameInstanceBase::ShowMainMenu()
+{
+
+}

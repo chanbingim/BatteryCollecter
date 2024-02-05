@@ -13,5 +13,7 @@ UCLASS()
 class GAMEPLAY_API UGameInstanceBase : public UGameInstance
 {
 	GENERATED_BODY()
-	
+public :
+	void ShowMainMenu();
+
 };

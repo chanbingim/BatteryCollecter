@@ -1,9 +1,0 @@
-{
-	"BuildId": "23058290",
-	"Modules": 
-	{
-		"GamePlay": "UnrealEditor-GamePlay.dll",
-		"Widget": "UnrealEditor-Widget.dll",
-		"a": "UnrealEditor-a.dll"
-	}
-}
