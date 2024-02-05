@@ -1,0 +1,19 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\rlack\\documents\\github\\batterycollecter\\intermediate\\build\\win64\\unrealeditor\\inc\\gameplay\\uht\\multigamemodebase.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\rlack\\documents\\github\\batterycollecter\\intermediate\\build\\win64\\aeditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\users\\rlack\\documents\\github\\batterycollecter\\intermediate\\build\\win64\\unrealeditor\\development\\gameplay\\definitions.gameplay.h",
+            "c:\\users\\rlack\\documents\\github\\batterycollecter\\source\\gameplay\\multigamemodebase.h",
+            "c:\\program files\\epic games\\ue_5.1\\engine\\source\\runtime\\engine\\classes\\gameframework\\gamemodebase.h",
+            "c:\\program files\\epic games\\ue_5.1\\engine\\source\\runtime\\engine\\classes\\engine\\serverstatreplicator.h",
+            "c:\\program files\\epic games\\ue_5.1\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\serverstatreplicator.generated.h",
+            "c:\\program files\\epic games\\ue_5.1\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\gamemodebase.generated.h",
+            "c:\\users\\rlack\\documents\\github\\batterycollecter\\intermediate\\build\\win64\\unrealeditor\\inc\\gameplay\\uht\\multigamemodebase.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

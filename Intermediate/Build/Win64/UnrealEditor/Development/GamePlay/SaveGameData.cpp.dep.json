@@ -1,0 +1,17 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\rlack\\documents\\github\\batterycollecter\\source\\gameplay\\savegamedata.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\rlack\\documents\\github\\batterycollecter\\intermediate\\build\\win64\\aeditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\users\\rlack\\documents\\github\\batterycollecter\\intermediate\\build\\win64\\unrealeditor\\development\\gameplay\\definitions.gameplay.h",
+            "c:\\users\\rlack\\documents\\github\\batterycollecter\\source\\gameplay\\savegamedata.h",
+            "c:\\program files\\epic games\\ue_5.1\\engine\\source\\runtime\\engine\\classes\\gameframework\\savegame.h",
+            "c:\\program files\\epic games\\ue_5.1\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\savegame.generated.h",
+            "c:\\users\\rlack\\documents\\github\\batterycollecter\\intermediate\\build\\win64\\unrealeditor\\inc\\gameplay\\uht\\savegamedata.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

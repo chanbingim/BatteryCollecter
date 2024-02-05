@@ -1,0 +1,13 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\rlack\\documents\\github\\batterycollecter\\intermediate\\build\\win64\\unrealeditor\\inc\\widget\\uht\\widget.init.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\rlack\\documents\\github\\batterycollecter\\intermediate\\build\\win64\\aeditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\users\\rlack\\documents\\github\\batterycollecter\\intermediate\\build\\win64\\unrealeditor\\development\\widget\\definitions.widget.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

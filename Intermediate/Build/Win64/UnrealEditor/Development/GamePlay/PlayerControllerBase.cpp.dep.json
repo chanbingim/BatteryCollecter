@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\rlack\\documents\\github\\batterycollecter\\source\\gameplay\\playercontrollerbase.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\rlack\\documents\\github\\batterycollecter\\intermediate\\build\\win64\\aeditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\users\\rlack\\documents\\github\\batterycollecter\\intermediate\\build\\win64\\unrealeditor\\development\\gameplay\\definitions.gameplay.h",
+            "c:\\users\\rlack\\documents\\github\\batterycollecter\\source\\gameplay\\playercontrollerbase.h",
+            "c:\\users\\rlack\\documents\\github\\batterycollecter\\intermediate\\build\\win64\\unrealeditor\\inc\\gameplay\\uht\\playercontrollerbase.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
