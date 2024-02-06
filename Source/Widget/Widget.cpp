@@ -3,4 +3,5 @@
 #include "Widget.h"
 #include "Modules/ModuleManager.h"
 
-IMPLEMENT_MODULE(FDefaultModuleImpl, Widget);
+//IMPLEMENT_GAME_MODULE(FDefaultGameModuleImpl, Widget);
+IMPLEMENT_PRIMARY_GAME_MODULE(FDefaultGameModuleImpl, Widget, "Widget");

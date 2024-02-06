@@ -8,8 +8,15 @@ public class GamePlay : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine"});
+        PublicIncludePaths.AddRange(
+            new string[] {
+                
+				//"And so on..."
+			}
+        );
 
-        PrivateDependencyModuleNames.AddRange(new string[] { });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine",  "OnlineSubsystem", "OnlineSubsystemUtils", "UMG", "Slate", "SlateCore", "a", "Widget" });
+
+        PrivateDependencyModuleNames.AddRange(new string[] {});
     }
 }

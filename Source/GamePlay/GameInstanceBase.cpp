@@ -2,10 +2,112 @@
 
 
 #include "GameInstanceBase.h"
-#include "Kismet/GameplayStatics.h"
+#include "OnlineSubsystem.h"
 #include "MultiGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "OnlineSessionSettings.h"
+#include "Net/UnrealNetwork.h"
+#include "Widget/GameHUDBase.h"
+
+
+void UGameInstanceBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps)
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UGameInstanceBase, NumberOfPlayer);
+	DOREPLIFETIME(UGameInstanceBase, bEnableLan);
+	DOREPLIFETIME(UGameInstanceBase, ServerName);
+}
 
 void UGameInstanceBase::ShowMainMenu()
+{
+	AGameHUDBase* BaseHUD = Cast<AGameHUDBase>(UGameplayStatics::GetPlayerController(this,0)->GetHUD());
+	
+	if (BaseHUD)
+	{
+		BaseHUD->CreateMainMenuWidget();
+	}
+		
+}
+
+void UGameInstanceBase::LaunchLobby(int _NumberOfPlayers, bool _EnableLan, FText _Servername)
+{
+	NumberOfPlayer = _NumberOfPlayers;
+	bEnableLan = _EnableLan;
+	ServerName = _Servername;
+
+	ShowLoadingScreen();
+	CreateGameSession();
+}
+
+void UGameInstanceBase::ShowLoadingScreen()
+{
+
+}
+
+void UGameInstanceBase::CreateGameSession()
+{
+	if (OnlineSessionInterface.IsValid() == false)
+	{
+		return;
+	}
+	
+	auto ExistingSession = OnlineSessionInterface->GetNamedSession(NAME_GameSession);
+	if (ExistingSession != nullptr)
+	{
+		OnlineSessionInterface->DestroySession(NAME_GameSession);
+	}
+
+	OnlineSessionInterface->AddOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegate);
+
+	TSharedPtr<FOnlineSessionSettings> SessionSettings = MakeShareable(new FOnlineSessionSettings());
+	SessionSettings->bIsLANMatch = false;
+	SessionSettings->NumPublicConnections = 4;
+	SessionSettings->bAllowJoinInProgress = true;
+
+	//위의 SessionSettings를 만족하는 Session을 생성한다.
+	OnlineSessionInterface->CreateSession(UGameplayStatics::GetPlayerControllerID(UGameplayStatics::GetPlayerController(this, 0)), NAME_GameSession, *SessionSettings);//위의 SessionSettings를 만족하는 Session을 생성한다
+}
+
+void UGameInstanceBase::JoinGameSession()
+{
+	ShowLoadingScreen();
+
+}
+
+void UGameInstanceBase::OnCreateSessionComplete(FName SessionName, bool bWasSuccessful)
+{
+	//Session 생성이 성공한 경우
+	if (bWasSuccessful)
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(
+				-1,
+				15.0f,
+				FColor::Blue,
+				FString::Printf(TEXT("Created session: %s"), *SessionName.ToString())
+			);
+
+			UGameplayStatics::OpenLevel(this, FName(TEXT("Lobby")), true, "listen");
+		}
+	}
+	//Session 생성이 실패한 경우
+	else
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(
+				-1,
+				15.f,
+				FColor::Red,
+				FString(TEXT("Failed to create session!"))
+			);
+		}
+	}
+}
+
+void UGameInstanceBase::OnFindSessionsComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
 {
 
 }

@@ -3,4 +3,4 @@
 #include "GamePlay.h"
 #include "Modules/ModuleManager.h"
 
-IMPLEMENT_MODULE(FDefaultModuleImpl, GamePlay);
+IMPLEMENT_GAME_MODULE(FDefaultGameModuleImpl, GamePlay);

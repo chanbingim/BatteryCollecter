@@ -3,5 +3,5 @@
 #include "a.h"
 #include "Modules/ModuleManager.h"
 
-IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, a, "a" );
- 
+//IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, a, "a" );
+IMPLEMENT_GAME_MODULE(FDefaultGameModuleImpl, a);

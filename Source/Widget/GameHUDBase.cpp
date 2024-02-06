@@ -3,6 +3,19 @@
 #include "GameHUDBase.h"
 #include "UserWidgetBaseClass.h"
 
+AGameHUDBase::AGameHUDBase()
+{
+	GameWidgetPool.SetWorld(GetWorld());
+	GameWidgetPool.SetDefaultPlayerController(GetOwningPlayerController());
+}
+
+void AGameHUDBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	
+}
+
 void AGameHUDBase::CreateMainMenuWidget()
 {
 	UUserWidget* MainMenuWidget = CheckWidgetPool(MainMenuClass);
@@ -46,12 +59,12 @@ UUserWidget* AGameHUDBase::CheckWidgetPool(TSubclassOf<class UUserWidget> CheckW
 	TArray<UUserWidget*> ActiveWidgets = GameWidgetPool.GetActiveWidgets();
 	for (UUserWidget* Widget : ActiveWidgets)
 	{
-		if (Widget->StaticClass() == MainMenuClass)
+		if (Widget->StaticClass() == CheckWidget)
 		{
 			return Widget;
 		}
 	}
-	return false;
+	return nullptr;
 }
 
 TSubclassOf<class UUserWidget> AGameHUDBase::CheckWidgetClass(EWidgetName Name)

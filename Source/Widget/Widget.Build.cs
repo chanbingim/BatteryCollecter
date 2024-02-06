@@ -8,8 +8,15 @@ public class Widget : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "UMG", "Slate", "SlateCore" });
+        PublicIncludePaths.AddRange(
+            new string[] {
+               
+				//"And so on..."
+			}
+        );
 
-        PrivateDependencyModuleNames.AddRange(new string[] { "UMG", "Slate", "SlateCore" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "UMG", "Slate", "SlateCore", "OnlineSubsystem", "OnlineSubsystemUtils", "a", "GamePlay"});
+
+        PrivateDependencyModuleNames.AddRange(new string[] {  });
     }
 }

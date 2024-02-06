@@ -20,7 +20,10 @@ class WIDGET_API AGameHUDBase : public AHUD
 {
 	GENERATED_BODY()
 
+	AGameHUDBase();
 protected:
+	virtual void BeginPlay();
+
 	UPROPERTY(EditAnywhere, Category = "Widget")
 	TSubclassOf<class UUserWidget> MainMenuClass = nullptr;
 
