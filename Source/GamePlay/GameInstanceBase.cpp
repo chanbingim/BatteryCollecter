@@ -65,8 +65,8 @@ void UGameInstanceBase::CreateGameSession()
 	SessionSettings->NumPublicConnections = 4;
 	SessionSettings->bAllowJoinInProgress = true;
 
-	//À§ÀÇ SessionSettings¸¦ ¸¸Á·ÇÏ´Â SessionÀ» »ý¼ºÇÑ´Ù.
-	OnlineSessionInterface->CreateSession(UGameplayStatics::GetPlayerControllerID(UGameplayStatics::GetPlayerController(this, 0)), NAME_GameSession, *SessionSettings);//À§ÀÇ SessionSettings¸¦ ¸¸Á·ÇÏ´Â SessionÀ» »ý¼ºÇÑ´Ù
+	//ï¿½ï¿½ï¿½ï¿½ SessionSettingsï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Sessionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+	OnlineSessionInterface->CreateSession(UGameplayStatics::GetPlayerControllerID(UGameplayStatics::GetPlayerController(this, 0)), NAME_GameSession, *SessionSettings);//ï¿½ï¿½ï¿½ï¿½ SessionSettingsï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Sessionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
 }
 
 void UGameInstanceBase::JoinGameSession()
@@ -77,7 +77,7 @@ void UGameInstanceBase::JoinGameSession()
 
 void UGameInstanceBase::OnCreateSessionComplete(FName SessionName, bool bWasSuccessful)
 {
-	//Session »ý¼ºÀÌ ¼º°øÇÑ °æ¿ì
+	//Session ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	if (bWasSuccessful)
 	{
 		if (GEngine)
@@ -92,7 +92,7 @@ void UGameInstanceBase::OnCreateSessionComplete(FName SessionName, bool bWasSucc
 			UGameplayStatics::OpenLevel(this, FName(TEXT("Lobby")), true, "listen");
 		}
 	}
-	//Session »ý¼ºÀÌ ½ÇÆÐÇÑ °æ¿ì
+	//Session ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	else
 	{
 		if (GEngine)

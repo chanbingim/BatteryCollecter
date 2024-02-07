@@ -6,13 +6,6 @@
 #include "GameFramework/PlayerController.h"
 #include "PlayerControllerBase.generated.h"
 
-USTRUCT(BlueprintType)
-struct FPlayerInfo
-{
-	GENERATED_BODY()
-
-
-};
 /**
  * 
  */
