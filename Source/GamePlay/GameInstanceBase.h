@@ -38,6 +38,12 @@ public:
 	UFUNCTION()
 	void ShowLoadingScreen();
 
+	UFUNCTION()
+	void ShowHostMenu();
+
+	UFUNCTION()
+	void ShowOptionMenu();
+
 	IOnlineSessionPtr OnlineSessionInterface;
 
 	UFUNCTION()

@@ -16,25 +16,6 @@ void AGameHUDBase::BeginPlay()
 	
 }
 
-void AGameHUDBase::CreateMainMenuWidget()
-{
-	UUserWidget* MainMenuWidget = CheckWidgetPool(MainMenuClass);
-	if (MainMenuClass == nullptr)
-		return;
-
-	if (MainMenuWidget == nullptr)
-	{
-		MainMenuWidget = GameWidgetPool.GetOrCreateInstance(MainMenuClass);
-		MainMenuWidget->AddToViewport();
-	}
-	else
-	{
-		MainMenuWidget->AddToViewport();
-	}
-
-	GetOwningPlayerController()->bShowMouseCursor = true;
-}
-
 void AGameHUDBase::CreateWidget(EWidgetName Name)
 {
 	TSubclassOf<class UUserWidget> TempWidgetClass = CheckWidgetClass(Name);
@@ -54,12 +35,24 @@ void AGameHUDBase::CreateWidget(EWidgetName Name)
 	}
 }
 
+void AGameHUDBase::RemovWidget(EWidgetName Name)
+{
+	TSubclassOf<class UUserWidget> TempWidgetClass = CheckWidgetClass(Name);
+	UUserWidget* TempWidget = CheckWidgetPool(TempWidgetClass);
+
+	if (TempWidget != nullptr)
+	{
+		TempWidget->RemoveFromParent();
+		GameWidgetPool.Release(TempWidget);
+	}
+}
+
 UUserWidget* AGameHUDBase::CheckWidgetPool(TSubclassOf<class UUserWidget> CheckWidget)
 {
 	TArray<UUserWidget*> ActiveWidgets = GameWidgetPool.GetActiveWidgets();
 	for (UUserWidget* Widget : ActiveWidgets)
 	{
-		if (Widget->StaticClass() == CheckWidget)
+		if (Widget->GetClass() == CheckWidget)
 		{
 			return Widget;
 		}
@@ -71,6 +64,8 @@ TSubclassOf<class UUserWidget> AGameHUDBase::CheckWidgetClass(EWidgetName Name)
 {
 	switch (Name)
 	{
+	case EWidgetName::MainMenu:
+		return MainMenuClass;
 	case EWidgetName::HostMenu:
 		return HostMenuClass;
 	case EWidgetName::ServerMenu:

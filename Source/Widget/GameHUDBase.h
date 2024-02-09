@@ -10,6 +10,7 @@
 UENUM(BlueprintType)
 enum class EWidgetName : uint8
 {
+	MainMenu,
 	HostMenu,
 	ServerMenu,
 	OptionMenu,
@@ -40,10 +41,10 @@ public:
 	FUserWidgetPool GameWidgetPool;
 
 	UFUNCTION()
-	void CreateMainMenuWidget();
+	void CreateWidget(EWidgetName Name);
 
 	UFUNCTION()
-	void CreateWidget(EWidgetName Name);
+	void RemovWidget(EWidgetName Name);
 
 	UFUNCTION()
 	UUserWidget* CheckWidgetPool(TSubclassOf<class UUserWidget> CheckWidget);

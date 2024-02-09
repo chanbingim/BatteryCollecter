@@ -25,9 +25,8 @@ void UGameInstanceBase::ShowMainMenu()
 	
 	if (BaseHUD)
 	{
-		BaseHUD->CreateMainMenuWidget();
+		BaseHUD->CreateWidget(EWidgetName::MainMenu);
 	}
-		
 }
 
 void UGameInstanceBase::LaunchLobby(int _NumberOfPlayers, bool _EnableLan, FText _Servername)
@@ -43,6 +42,26 @@ void UGameInstanceBase::LaunchLobby(int _NumberOfPlayers, bool _EnableLan, FText
 void UGameInstanceBase::ShowLoadingScreen()
 {
 
+}
+
+void UGameInstanceBase::ShowHostMenu()
+{
+	AGameHUDBase* BaseHUD = Cast<AGameHUDBase>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
+
+	if (BaseHUD)
+	{
+		BaseHUD->CreateWidget(EWidgetName::HostMenu);
+	}
+}
+
+void UGameInstanceBase::ShowOptionMenu()
+{
+	AGameHUDBase* BaseHUD = Cast<AGameHUDBase>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
+
+	if (BaseHUD)
+	{
+		BaseHUD->CreateWidget(EWidgetName::OptionMenu);
+	}
 }
 
 void UGameInstanceBase::CreateGameSession()
