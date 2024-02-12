@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "GamePlay/SaveGameData.h"
 #include "OptionMenuClass.generated.h"
 
 class UImage;
 class UButton;
 class UEditableTextBox;
+
+static FText SaveDataName;
 
 USTRUCT(BlueprintType)
 struct FOptionMenu{
@@ -40,8 +43,22 @@ class WIDGET_API UOptionMenuClass : public UUserWidget
 {
 	GENERATED_BODY()
 private :
+	int32 AvatorCount = 0;
+
+	UPROPERTY()
+	FPlayerInfo CharacterData;
+
 	UPROPERTY(VisibleAnywhere, Category = "Instance")
 	class UGameInstanceBase* MyGameInstance;
+
+	UFUNCTION()
+	void SaveGameCheck();
+
+	UFUNCTION()
+	void SetUpDisplay();
+
+	UFUNCTION()
+	void ChangedText(const FText& Text);
 
 	UFUNCTION()
 	void ClickedBackButton();
@@ -58,11 +75,21 @@ private :
 	UFUNCTION()
 	void CheckWidget();
 
+	UFUNCTION()
+	void LoadGame();
+
+	UFUNCTION()
+	void SaveGame();
+
 protected :
 	virtual void NativeOnInitialized();
 	virtual void NativeConstruct();
 
 public :
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<UTexture2D *> Avators;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FOptionMenu OptionMenu;
 };

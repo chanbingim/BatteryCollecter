@@ -2,4 +2,9 @@
 
 
 #include "MultiGameModeBase.h"
+#include "SaveGameData.h"
 
+AMultiGameModeBase::AMultiGameModeBase()
+{
+
+}

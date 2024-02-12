@@ -54,6 +54,23 @@ void UGameInstanceBase::ShowHostMenu()
 	}
 }
 
+void UGameInstanceBase::SaveDataCheck()
+{
+	FString PlayerSettingData;
+
+	bool bCheck = UGameplayStatics::DoesSaveGameExist(PlayerSettingData, 0);
+
+	if (bCheck)
+	{
+		ShowMainMenu();
+	}
+	else
+	{
+		ShowOptionMenu();
+		UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
+	}
+}
+
 void UGameInstanceBase::ShowOptionMenu()
 {
 	AGameHUDBase* BaseHUD = Cast<AGameHUDBase>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());

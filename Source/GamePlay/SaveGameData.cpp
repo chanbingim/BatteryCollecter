@@ -8,5 +8,13 @@ void USaveGameData::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(USaveGameData, PlayerInfo);
+	DOREPLIFETIME(USaveGameData, Info);
+}
+
+void USaveGameData::SetPlayerInfo(FPlayerInfo _Info)
+{
+	Info.PlayerCharacter = _Info.PlayerCharacter;
+	Info.PlayerImage = _Info.PlayerImage;
+	Info.PlayerName= FText::FromString(_Info.PlayerName.ToString());
+	Info.PlayerStatus = FText::FromString(_Info.PlayerStatus.ToString());
 }

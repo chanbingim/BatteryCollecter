@@ -27,9 +27,9 @@ private :
 	FOnJoinSessionCompleteDelegate JoinSessionCompleteDelegate;
 
 public:
-	void GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps);
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void ShowMainMenu();
 
 	UFUNCTION()
@@ -40,6 +40,9 @@ public:
 
 	UFUNCTION()
 	void ShowHostMenu();
+
+	UFUNCTION(BlueprintCallable)
+	void SaveDataCheck();
 
 	UFUNCTION()
 	void ShowOptionMenu();

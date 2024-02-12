@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your ccopyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -13,5 +13,13 @@ UCLASS()
 class GAMEPLAY_API AMultiGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+	AMultiGameModeBase();
+
+public :
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class USaveGameData> SaveGameClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USaveGameData* SaveDataInfo = nullptr;
 };

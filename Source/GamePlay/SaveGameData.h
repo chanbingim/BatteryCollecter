@@ -13,29 +13,30 @@ struct FPlayerInfo
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Info")
-	FText PlayerName;
+	FText PlayerName = FText::FromString("");
 
 	UPROPERTY(EditAnywhere, Category = "Info")
-	UTexture2D* PlayerImage;
+	UTexture2D* PlayerImage = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Info")
-	ACharacter* PlayerCharacter;
+	ACharacter* PlayerCharacter = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Info")
-	UTexture2D* PlayerCharacterImage;
-
-	UPROPERTY(EditAnywhere, Category = "Info")
-	FText PlayerStatus;
+	FText PlayerStatus = FText::FromString("");
 };
 
 UCLASS()
 class GAMEPLAY_API USaveGameData : public USaveGame
 {
 	GENERATED_BODY()
+private :
+	UPROPERTY(VisibleInstanceOnly, replicated, Category = "Server")
+	FPlayerInfo Info;
+
 protected :
-	void GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps);
+	 virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps);
 
 public :
-	UPROPERTY(VisibleInstanceOnly, replicated, Category = "Server")
-	FPlayerInfo PlayerInfo;
+	void SetPlayerInfo(FPlayerInfo _Info);
+	FORCEINLINE FPlayerInfo GetPlayerInfo() { return Info; }
 };

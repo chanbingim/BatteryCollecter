@@ -4,6 +4,9 @@
 #include "OptionMenuClass.h"
 #include "GameHUDBase.h"
 #include "GamePlay/GameInstanceBase.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "GamePlay/MultiGameModeBase.h"
 #include "Components/Image.h"
 #include "Components/Button.h"
 #include "Components/EditableTextBox.h"
@@ -20,6 +23,45 @@ void UOptionMenuClass::NativeConstruct()
 
 	CheckWidget();
 	MyGameInstance = Cast<UGameInstanceBase>(GetGameInstance());
+
+	if (SaveDataName.ToString() != "")
+	{
+		OptionMenu.UserNameBox->SetText(SaveDataName);
+	}
+	else
+	{
+		OptionMenu.UserNameBox->SetText(FText::FromString("Enter Name"));
+	}
+
+	SaveGameCheck();
+}
+
+void UOptionMenuClass::SaveGameCheck()
+{
+	AMultiGameModeBase* MyGameMode = Cast<AMultiGameModeBase>(UGameplayStatics::GetGameMode(this));
+
+	bool bCheck = UGameplayStatics::DoesSaveGameExist(OptionMenu.UserNameBox->GetText().ToString(), 0);
+
+	if (bCheck)
+	{
+		LoadGame();
+	}
+	else
+	{
+		SaveGame();
+	}
+
+	SetUpDisplay();
+}
+
+void UOptionMenuClass::SetUpDisplay()
+{
+
+}
+
+void UOptionMenuClass::ChangedText(const FText& Text)
+{
+
 }
 
 void UOptionMenuClass::ClickedBackButton()
@@ -37,16 +79,26 @@ void UOptionMenuClass::ClickedAcceptButton()
 	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(PlayerController->GetHUD());
 
 	MyGameHUD->RemovWidget(EWidgetName::OptionMenu);
+
+	CharacterData.PlayerName = OptionMenu.UserNameBox->GetText();
+	SaveGame();
+	MyGameInstance->ShowMainMenu();
 }
 
 void UOptionMenuClass::ClickedRightButton()
 {
+	AvatorCount = UKismetMathLibrary::Clamp(AvatorCount + 1, 0, Avators.Num() - 1);
+	OptionMenu.AvatorImage->SetBrushFromTexture(Avators[AvatorCount]);
 
+	CharacterData.PlayerImage = Avators[AvatorCount];
 }
 
 void UOptionMenuClass::ClickedLeftButton()
 {
+	AvatorCount = UKismetMathLibrary::Clamp(AvatorCount - 1, 0, Avators.Num() - 1);
+	OptionMenu.AvatorImage->SetBrushFromTexture(Avators[AvatorCount]);
 
+	CharacterData.PlayerImage = Avators[AvatorCount];
 }
 
 void UOptionMenuClass::CheckWidget()
@@ -126,4 +178,41 @@ void UOptionMenuClass::CheckWidget()
 	{
 		OptionMenu.RightButton->OnClicked.AddDynamic(this, &UOptionMenuClass::ClickedRightButton);
 	}
+
+	OptionMenu.UserNameBox->OnTextChanged.AddDynamic(this, &UOptionMenuClass::ChangedText);
+}
+
+void UOptionMenuClass::LoadGame()
+{
+	USaveGame* Data = UGameplayStatics::LoadGameFromSlot(OptionMenu.UserNameBox->GetText().ToString(), 0);
+	USaveGameData* newSaveData = Cast<USaveGameData>(Data);
+
+	CharacterData = newSaveData->GetPlayerInfo();
+
+	OptionMenu.AvatorImage->SetBrushFromTexture(CharacterData.PlayerImage);
+}
+
+void UOptionMenuClass::SaveGame()
+{
+	AMultiGameModeBase* MyGameMode = Cast<AMultiGameModeBase>(UGameplayStatics::GetGameMode(this));
+
+	if (MyGameMode->SaveDataInfo == nullptr)
+	{
+		USaveGame* Data = UGameplayStatics::CreateSaveGameObject(MyGameMode->SaveGameClass);
+		USaveGameData* newSaveData = Cast<USaveGameData>(Data);
+
+		MyGameMode->SaveDataInfo = newSaveData;
+	}
+
+	CharacterData.PlayerImage = Avators[AvatorCount];
+	CharacterData.PlayerName = OptionMenu.UserNameBox->GetText();
+	CharacterData.PlayerStatus = FText::FromString("");
+	CharacterData.PlayerCharacter = UGameplayStatics::GetPlayerCharacter(this, 0);
+
+	if (MyGameMode->SaveDataInfo != nullptr)
+		MyGameMode->SaveDataInfo->SetPlayerInfo(CharacterData);
+
+	SaveDataName = OptionMenu.UserNameBox->GetText();
+
+	UGameplayStatics::SaveGameToSlot(MyGameMode->SaveDataInfo, CharacterData.PlayerName.ToString(),0);
 }
