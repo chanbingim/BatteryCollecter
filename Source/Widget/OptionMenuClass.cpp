@@ -24,9 +24,10 @@ void UOptionMenuClass::NativeConstruct()
 	CheckWidget();
 	MyGameInstance = Cast<UGameInstanceBase>(GetGameInstance());
 
-	if (SaveDataName.ToString() != "")
+	FText PlayerSettingName = MyGameInstance->GetPlayerSaveDataName();
+	if (PlayerSettingName.ToString() != "")
 	{
-		OptionMenu.UserNameBox->SetText(SaveDataName);
+		OptionMenu.UserNameBox->SetText(PlayerSettingName);
 	}
 	else
 	{
@@ -40,7 +41,8 @@ void UOptionMenuClass::SaveGameCheck()
 {
 	AMultiGameModeBase* MyGameMode = Cast<AMultiGameModeBase>(UGameplayStatics::GetGameMode(this));
 
-	bool bCheck = UGameplayStatics::DoesSaveGameExist(OptionMenu.UserNameBox->GetText().ToString(), 0);
+	FText PlayerSettingName = MyGameInstance->GetPlayerSaveDataName();
+	bool bCheck = UGameplayStatics::DoesSaveGameExist(PlayerSettingName.ToString(), 0);
 
 	if (bCheck)
 	{
@@ -50,18 +52,6 @@ void UOptionMenuClass::SaveGameCheck()
 	{
 		SaveGame();
 	}
-
-	SetUpDisplay();
-}
-
-void UOptionMenuClass::SetUpDisplay()
-{
-
-}
-
-void UOptionMenuClass::ChangedText(const FText& Text)
-{
-
 }
 
 void UOptionMenuClass::ClickedBackButton()
@@ -79,6 +69,7 @@ void UOptionMenuClass::ClickedAcceptButton()
 	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(PlayerController->GetHUD());
 
 	MyGameHUD->RemovWidget(EWidgetName::OptionMenu);
+
 
 	CharacterData.PlayerName = OptionMenu.UserNameBox->GetText();
 	SaveGame();
@@ -178,8 +169,6 @@ void UOptionMenuClass::CheckWidget()
 	{
 		OptionMenu.RightButton->OnClicked.AddDynamic(this, &UOptionMenuClass::ClickedRightButton);
 	}
-
-	OptionMenu.UserNameBox->OnTextChanged.AddDynamic(this, &UOptionMenuClass::ChangedText);
 }
 
 void UOptionMenuClass::LoadGame()
@@ -188,8 +177,6 @@ void UOptionMenuClass::LoadGame()
 	USaveGameData* newSaveData = Cast<USaveGameData>(Data);
 
 	CharacterData = newSaveData->GetPlayerInfo();
-
-	OptionMenu.AvatorImage->SetBrushFromTexture(CharacterData.PlayerImage);
 }
 
 void UOptionMenuClass::SaveGame()
@@ -212,7 +199,7 @@ void UOptionMenuClass::SaveGame()
 	if (MyGameMode->SaveDataInfo != nullptr)
 		MyGameMode->SaveDataInfo->SetPlayerInfo(CharacterData);
 
-	SaveDataName = OptionMenu.UserNameBox->GetText();
+	MyGameInstance->SetSaveDataName(OptionMenu.UserNameBox->GetText());
 
 	UGameplayStatics::SaveGameToSlot(MyGameMode->SaveDataInfo, CharacterData.PlayerName.ToString(),0);
 }

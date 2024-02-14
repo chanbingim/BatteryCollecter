@@ -11,8 +11,6 @@ class UImage;
 class UButton;
 class UEditableTextBox;
 
-static FText SaveDataName;
-
 USTRUCT(BlueprintType)
 struct FOptionMenu{
 	GENERATED_BODY()
@@ -53,12 +51,6 @@ private :
 
 	UFUNCTION()
 	void SaveGameCheck();
-
-	UFUNCTION()
-	void SetUpDisplay();
-
-	UFUNCTION()
-	void ChangedText(const FText& Text);
 
 	UFUNCTION()
 	void ClickedBackButton();

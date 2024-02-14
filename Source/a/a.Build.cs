@@ -15,6 +15,6 @@ public class a : ModuleRules
 			}
         );
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "EnhancedInput", "UMG", "Slate", "SlateCore", "OnlineSubsystem", "OnlineSubsystemUtils","Widget", "GamePlay" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "EnhancedInput", "UMG", "Slate", "SlateCore", "Widget", "GamePlay","OnlineSubsystemSteam", "OnlineSubsystem"});
 	}
 }

@@ -15,7 +15,7 @@ public class GamePlay : ModuleRules
 			}
         );
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine",  "OnlineSubsystem", "OnlineSubsystemUtils", "UMG", "Slate", "SlateCore", "a", "Widget" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine",  "OnlineSubsystem", "OnlineSubsystemUtils", "OnlineSubsystemSteam", "UMG", "Slate", "SlateCore", "a", "Widget" });
 
         PrivateDependencyModuleNames.AddRange(new string[] {});
     }

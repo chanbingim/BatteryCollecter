@@ -15,7 +15,7 @@ public class Widget : ModuleRules
 			}
         );
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "UMG", "Slate", "SlateCore", "OnlineSubsystem", "OnlineSubsystemUtils", "a", "GamePlay"});
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "UMG", "Slate", "SlateCore", "OnlineSubsystem", "OnlineSubsystemSteam", "OnlineSubsystemUtils", "a", "GamePlay" });
 
         PrivateDependencyModuleNames.AddRange(new string[] {  });
     }

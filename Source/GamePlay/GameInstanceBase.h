@@ -4,8 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "OnlineSessionSettings.h"
+#include "OnlineSubsystem.h"
 #include "Interfaces/OnlineSessionInterface.h"
 #include "GameInstanceBase.generated.h"
+
+static FText SaveDataName = FText::FromString("Enter Name");
 
 UCLASS()
 class GAMEPLAY_API UGameInstanceBase : public UGameInstance
@@ -13,7 +17,6 @@ class GAMEPLAY_API UGameInstanceBase : public UGameInstance
 	GENERATED_BODY()
 
 private :
-
 	UPROPERTY(VisibleInstanceOnly,replicated, Category = "Server")
 	int	NumberOfPlayer;
 
@@ -22,15 +25,27 @@ private :
 
 	UPROPERTY(VisibleInstanceOnly, replicated, Category = "Server")
 	FText ServerName;
+protected :
+	IOnlineSessionPtr SessionInterface;
+	TSharedPtr<FOnlineSessionSearch> SessionSearch;
+	
 
-	FOnCreateSessionCompleteDelegate CreateSessionCompleteDelegate;
-	FOnJoinSessionCompleteDelegate JoinSessionCompleteDelegate;
+	virtual void OnCreateSessionComplete(FName Servername, bool bSucceded);
+	virtual void OnFindSessionComplete(bool bSucceded);
+	virtual void Init();
 
 public:
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps);
 
+	FOnlineSession AvailableSession;
+
+	bool bFindSession = false;
+
 	UFUNCTION()
 	void ShowMainMenu();
+
+	UFUNCTION()
+	void ShowServerMenu();
 
 	UFUNCTION()
 	void LaunchLobby(int _NumberOfPlayers, bool _EnableLan, FText _Servername);
@@ -47,15 +62,15 @@ public:
 	UFUNCTION()
 	void ShowOptionMenu();
 
-	IOnlineSessionPtr OnlineSessionInterface;
-
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void CreateGameSession();
 
 	UFUNCTION()
 	void JoinGameSession();
 
-	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
+	UFUNCTION(BlueprintCallable)
+	FText GetPlayerSaveDataName() { return SaveDataName; }
 
-	void OnFindSessionsComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
+	UFUNCTION()
+	void SetSaveDataName(FText _Name) { SaveDataName = _Name; }
 };

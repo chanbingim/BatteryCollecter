@@ -83,12 +83,11 @@ void UUserWidgetBaseClass::NativeConstruct()
 
 void UUserWidgetBaseClass::ClickFindButton()
 {
-		GEngine->AddOnScreenDebugMessage(
-			-1,
-			15.0f,
-			FColor::Blue,
-			FString(TEXT("Clicked"))
-		);
+	APlayerController* PlayerController = Cast<APlayerController>(GetOwningPlayerPawn()->GetController());
+	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(PlayerController->GetHUD());
+
+	MyGameHUD->RemovWidget(EWidgetName::MainMenu);
+	MyGameInstance->ShowServerMenu();
 }
 
 void UUserWidgetBaseClass::ClickHostButton()

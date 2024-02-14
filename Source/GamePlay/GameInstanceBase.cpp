@@ -4,11 +4,24 @@
 #include "GameInstanceBase.h"
 #include "OnlineSubsystem.h"
 #include "MultiGameModeBase.h"
+#include "Kismet/KismetStringLibrary.h"
 #include "Kismet/GameplayStatics.h"
-#include "OnlineSessionSettings.h"
 #include "Net/UnrealNetwork.h"
 #include "Widget/GameHUDBase.h"
 
+void UGameInstanceBase::Init()
+{
+	if (IOnlineSubsystem* SubSystem = IOnlineSubsystem::Get())
+	{
+		SessionInterface = SubSystem->GetSessionInterface();
+
+		if (SessionInterface.IsValid())
+		{
+			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UGameInstanceBase::OnCreateSessionComplete);
+			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UGameInstanceBase::OnFindSessionComplete);
+		}
+	}
+}
 
 void UGameInstanceBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps)
 {
@@ -26,6 +39,16 @@ void UGameInstanceBase::ShowMainMenu()
 	if (BaseHUD)
 	{
 		BaseHUD->CreateWidget(EWidgetName::MainMenu);
+	}
+}
+
+void UGameInstanceBase::ShowServerMenu()
+{
+	AGameHUDBase* BaseHUD = Cast<AGameHUDBase>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
+	
+	if (BaseHUD)
+	{
+		BaseHUD->CreateWidget(EWidgetName::ServerMenu);
 	}
 }
 
@@ -56,9 +79,7 @@ void UGameInstanceBase::ShowHostMenu()
 
 void UGameInstanceBase::SaveDataCheck()
 {
-	FString PlayerSettingData;
-
-	bool bCheck = UGameplayStatics::DoesSaveGameExist(PlayerSettingData, 0);
+	bool bCheck = UGameplayStatics::DoesSaveGameExist(SaveDataName.ToString(), 0);
 
 	if (bCheck)
 	{
@@ -83,67 +104,61 @@ void UGameInstanceBase::ShowOptionMenu()
 
 void UGameInstanceBase::CreateGameSession()
 {
-	if (OnlineSessionInterface.IsValid() == false)
+	FName SessionName = UKismetStringLibrary::Conv_StringToName(SaveDataName.ToString());
+	FOnlineSessionSettings SessionSetting;
+	SessionSetting.bAllowInvites = true;
+	SessionSetting.bIsDedicated = false;
+	SessionSetting.bIsLANMatch = bEnableLan;
+	SessionSetting.bShouldAdvertise = true;
+	SessionSetting.bUsesPresence = true;
+	SessionSetting.NumPublicConnections = NumberOfPlayer;
+
+	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
+	SessionInterface->CreateSession(*LocalPlayer->GetPreferredUniqueNetId(),SessionName,SessionSetting);
+}
+
+void UGameInstanceBase::OnCreateSessionComplete(FName Servername, bool bSucceded)
+{
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		15.0f,
+		FColor::Blue,
+		FString(TEXT("Succed make Session"))
+	);
+}
+
+void UGameInstanceBase::OnFindSessionComplete(bool bSucceded)
+{
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		15.0f,
+		FColor::Blue,
+		FString(TEXT("Find Session"))
+	);
+
+	if (bSucceded)
 	{
-		return;
+		bFindSession = true;
+		TArray<FOnlineSessionSearchResult> SearchResults = SessionSearch->SearchResults;
+
+		for (FOnlineSessionSearchResult Result : SearchResults)
+		{
+			if (Result.Session.SessionSettings.NumPublicConnections != Result.Session.SessionSettings.NumPublicConnections - Result.Session.NumOpenPublicConnections)
+			{
+				//AvailableSession = Result.Session;
+			}
+		}
 	}
-	
-	auto ExistingSession = OnlineSessionInterface->GetNamedSession(NAME_GameSession);
-	if (ExistingSession != nullptr)
-	{
-		OnlineSessionInterface->DestroySession(NAME_GameSession);
-	}
-
-	OnlineSessionInterface->AddOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegate);
-
-	TSharedPtr<FOnlineSessionSettings> SessionSettings = MakeShareable(new FOnlineSessionSettings());
-	SessionSettings->bIsLANMatch = false;
-	SessionSettings->NumPublicConnections = 4;
-	SessionSettings->bAllowJoinInProgress = true;
-
-	//���� SessionSettings�� �����ϴ� Session�� �����Ѵ�.
-	OnlineSessionInterface->CreateSession(UGameplayStatics::GetPlayerControllerID(UGameplayStatics::GetPlayerController(this, 0)), NAME_GameSession, *SessionSettings);//���� SessionSettings�� �����ϴ� Session�� �����Ѵ�
 }
 
 void UGameInstanceBase::JoinGameSession()
 {
 	ShowLoadingScreen();
+	SessionSearch = MakeShareable(new FOnlineSessionSearch());
+	SessionSearch->bIsLanQuery = true;
+	SessionSearch->MaxSearchResults = 1000;
+	SessionSearch->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
 
-}
-
-void UGameInstanceBase::OnCreateSessionComplete(FName SessionName, bool bWasSuccessful)
-{
-	//Session ������ ������ ���
-	if (bWasSuccessful)
-	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(
-				-1,
-				15.0f,
-				FColor::Blue,
-				FString::Printf(TEXT("Created session: %s"), *SessionName.ToString())
-			);
-
-			UGameplayStatics::OpenLevel(this, FName(TEXT("Lobby")), true, "listen");
-		}
-	}
-	//Session ������ ������ ���
-	else
-	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(
-				-1,
-				15.f,
-				FColor::Red,
-				FString(TEXT("Failed to create session!"))
-			);
-		}
-	}
-}
-
-void UGameInstanceBase::OnFindSessionsComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
-{
-
+	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
+	SessionInterface->FindSessions(*LocalPlayer->GetPreferredUniqueNetId(), SessionSearch.ToSharedRef());
 }

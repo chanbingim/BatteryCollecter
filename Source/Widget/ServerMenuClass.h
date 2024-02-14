@@ -7,6 +7,7 @@
 #include "ServerMenuClass.generated.h"
 
 class UButton;
+class UWidgetSwitcher;
 class UTextBlock;
 
 USTRUCT(BlueprintType)
@@ -27,6 +28,9 @@ public:
 	UButton* BackButton = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UWidgetSwitcher* Siwtcher = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UTextBlock* LanTextBlock = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -38,9 +42,43 @@ class WIDGET_API UServerMenuClass : public UUserWidget
 {
 	GENERATED_BODY()
 private :
+	UPROPERTY(VisibleAnywhere, Category = "Instance")
+	class UGameInstanceBase* MyGameInstance;
+
+	UPROPERTY()
+	bool bFindSession = false;
+
 	UFUNCTION()
 	void CheckWidget();
+
+	UFUNCTION()
+	void ClickedRightButton();
+
+	UFUNCTION()
+	void ClickedLeftButton();
+
+	UFUNCTION()
+	void ClickedBackButton();
+
+	UFUNCTION()
+	void DisplaySession();
+
+	UFUNCTION()
+	void ClickedAcceptButton();
+
+	UFUNCTION()
+	void TimerFunction();
+
+	void SuccessFindSession();
+	void FailureFindSession();
+
 protected:
 	virtual void NativeOnInitialized();
 	virtual void NativeConstruct();
+public :
+	UPROPERTY()
+	FTimerDynamicDelegate TimerDelegate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FServerMenu ServerMenu;
 };

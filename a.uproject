@@ -12,8 +12,7 @@
 				"Engine",
 				"UMG"
 			]
-		}
-,
+		},
 		{
 			"Name": "GamePlay",
 			"Type": "Runtime",
@@ -22,8 +21,7 @@
 				"Engine",
 				"UMG"
 			]
-		}
-,
+		},
 		{
 			"Name": "Widget",
 			"Type": "Runtime",
@@ -41,6 +39,33 @@
 			"TargetAllowList": [
 				"Editor"
 			]
+		},
+		{
+			"Name": "OnlineSubsystemNull",
+			"Enabled": true
+		},
+		{
+			"Name": "OnlineSubsystemUtils",
+			"Enabled": true
+		},
+		{
+			"Name": "OnlineSubsystemGooglePlay",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Android"
+			]
+		},
+		{
+			"Name": "OnlineSubsystemIOS",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"IOS",
+				"TVOS"
+			]
+		},
+		{
+			"Name": "OnlineSubsystem",
+			"Enabled": true
 		}
 	]
 }
