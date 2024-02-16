@@ -115,25 +115,23 @@ void UHostWidgetClass::CheckWidget()
 
 void UHostWidgetClass::AcceptButtonClicked()
 {
-	APlayerController* PlayerController = Cast<APlayerController>(GetOwningPlayerPawn()->GetController());
-	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(PlayerController->GetHUD());
-
+	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(GetOwningPlayer()->GetHUD());
+	
 	FText Name = HostMenu.EditableTextBox->GetText();
 	bool EnableLan = false;
 
 	if (HostMenu.ButtonText_2->GetText().ToString() == "LAN")
 		EnableLan = true;
 
-	MyGameHUD->RemovWidget(EWidgetName::HostMenu);
+	MyGameHUD->CheckWidgetArray(MyGameHUD->CheckWidgetClass(EWidgetName::HostMenu))->SetVisibility(ESlateVisibility::Hidden);;
 	MyGameInstance->LaunchLobby(PlayerOfNumber,EnableLan, Name);
 }
 
 void UHostWidgetClass::BackButtonClicked()
 {
-	APlayerController* PlayerController = Cast<APlayerController>(GetOwningPlayerPawn()->GetController());
-	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(PlayerController->GetHUD());
+	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(GetOwningPlayer()->GetHUD());
 
-	MyGameHUD->RemovWidget(EWidgetName::HostMenu);
+	MyGameHUD->CheckWidgetArray(MyGameHUD->CheckWidgetClass(EWidgetName::HostMenu))->SetVisibility(ESlateVisibility::Hidden);;
 	MyGameInstance->ShowMainMenu();
 }
 

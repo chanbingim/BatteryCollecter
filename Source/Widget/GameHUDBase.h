@@ -22,6 +22,8 @@ class WIDGET_API AGameHUDBase : public AHUD
 	GENERATED_BODY()
 
 	AGameHUDBase();
+
+	void GmaeBaseHudSetting();
 protected:
 	virtual void BeginPlay();
 
@@ -38,16 +40,23 @@ protected:
 	TSubclassOf<class UUserWidget> OptionMenuClass = nullptr;
 
 public:
+	TArray<UUserWidget*> ActiveWidgetArray;
 	FUserWidgetPool GameWidgetPool;
 
 	UFUNCTION()
-	void CreateWidget(EWidgetName Name);
+	void AddgWidget(EWidgetName Name);
 
 	UFUNCTION()
-	void RemovWidget(EWidgetName Name);
+	void RemoveArrayWidget(EWidgetName Name);
+
+	UFUNCTION()
+	void RemovePoolWidget(EWidgetName Name);
 
 	UFUNCTION()
 	UUserWidget* CheckWidgetPool(TSubclassOf<class UUserWidget> CheckWidget);
+
+	UFUNCTION()
+	UUserWidget* CheckWidgetArray(TSubclassOf<class UUserWidget> CheckWidget);
 
 	UFUNCTION()
 	TSubclassOf<class UUserWidget> CheckWidgetClass(EWidgetName Name);

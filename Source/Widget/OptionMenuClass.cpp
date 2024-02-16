@@ -56,21 +56,17 @@ void UOptionMenuClass::SaveGameCheck()
 
 void UOptionMenuClass::ClickedBackButton()
 {
-	APlayerController* PlayerController = Cast<APlayerController>(GetOwningPlayerPawn()->GetController());
-	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(PlayerController->GetHUD());
+	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(GetOwningPlayer()->GetHUD());
 
-	MyGameHUD->RemovWidget(EWidgetName::OptionMenu);
+	MyGameHUD->CheckWidgetArray(MyGameHUD->CheckWidgetClass(EWidgetName::OptionMenu))->SetVisibility(ESlateVisibility::Hidden);;
 	MyGameInstance->ShowMainMenu();
 }
 
 void UOptionMenuClass::ClickedAcceptButton()
 {
-	APlayerController* PlayerController = Cast<APlayerController>(GetOwningPlayerPawn()->GetController());
-	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(PlayerController->GetHUD());
+	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(GetOwningPlayer()->GetHUD());
 
-	MyGameHUD->RemovWidget(EWidgetName::OptionMenu);
-
-
+	MyGameHUD->CheckWidgetArray(MyGameHUD->CheckWidgetClass(EWidgetName::OptionMenu))->SetVisibility(ESlateVisibility::Hidden);;
 	CharacterData.PlayerName = OptionMenu.UserNameBox->GetText();
 	SaveGame();
 	MyGameInstance->ShowMainMenu();
@@ -177,6 +173,7 @@ void UOptionMenuClass::LoadGame()
 	USaveGameData* newSaveData = Cast<USaveGameData>(Data);
 
 	CharacterData = newSaveData->GetPlayerInfo();
+	OptionMenu.AvatorImage->SetBrushFromTexture(CharacterData.PlayerImage);
 }
 
 void UOptionMenuClass::SaveGame()

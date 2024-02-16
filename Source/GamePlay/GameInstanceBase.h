@@ -18,7 +18,7 @@ class GAMEPLAY_API UGameInstanceBase : public UGameInstance
 
 private :
 	UPROPERTY(VisibleInstanceOnly,replicated, Category = "Server")
-	int	NumberOfPlayer;
+	int	NumberOfPlayer = 2;
 
 	UPROPERTY(VisibleInstanceOnly, replicated, Category = "Server")
 	bool bEnableLan;
@@ -28,15 +28,12 @@ private :
 protected :
 	IOnlineSessionPtr SessionInterface;
 	TSharedPtr<FOnlineSessionSearch> SessionSearch;
-	
 
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps);
 	virtual void OnCreateSessionComplete(FName Servername, bool bSucceded);
 	virtual void OnFindSessionComplete(bool bSucceded);
-	virtual void Init();
-
+	virtual void Init() override;
 public:
-	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps);
-
 	FOnlineSession AvailableSession;
 
 	bool bFindSession = false;
@@ -56,13 +53,10 @@ public:
 	UFUNCTION()
 	void ShowHostMenu();
 
-	UFUNCTION(BlueprintCallable)
-	void SaveDataCheck();
-
 	UFUNCTION()
 	void ShowOptionMenu();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void CreateGameSession();
 
 	UFUNCTION()

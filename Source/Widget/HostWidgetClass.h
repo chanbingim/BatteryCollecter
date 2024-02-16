@@ -51,7 +51,7 @@ private :
 	UPROPERTY(VisibleAnywhere, Category = "Instance")
 	class UGameInstanceBase* MyGameInstance;
 
-	int32 PlayerOfNumber = 2;
+	int PlayerOfNumber = 2;
 
 	UFUNCTION()
 	void CheckWidget();
@@ -81,5 +81,5 @@ public :
 	FHostMenu HostMenu;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 MaxPlayerCount = 8;
+	int MaxPlayerCount = 8;
 };

@@ -86,7 +86,7 @@ void UUserWidgetBaseClass::ClickFindButton()
 	APlayerController* PlayerController = Cast<APlayerController>(GetOwningPlayerPawn()->GetController());
 	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(PlayerController->GetHUD());
 
-	MyGameHUD->RemovWidget(EWidgetName::MainMenu);
+	MyGameHUD->CheckWidgetArray(MyGameHUD->CheckWidgetClass(EWidgetName::MainMenu))->SetVisibility(ESlateVisibility::Hidden);;
 	MyGameInstance->ShowServerMenu();
 }
 
@@ -95,7 +95,7 @@ void UUserWidgetBaseClass::ClickHostButton()
 	APlayerController* PlayerController = Cast<APlayerController>(GetOwningPlayerPawn()->GetController());
 	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(PlayerController->GetHUD());
 
-	MyGameHUD->RemovWidget(EWidgetName::MainMenu);
+	MyGameHUD->CheckWidgetArray(MyGameHUD->CheckWidgetClass(EWidgetName::MainMenu))->SetVisibility(ESlateVisibility::Hidden);;
 	MyGameInstance->ShowHostMenu();
 }
 
@@ -104,7 +104,7 @@ void UUserWidgetBaseClass::ClickOptionButton()
 	APlayerController* PlayerController = Cast<APlayerController>(GetOwningPlayerPawn()->GetController());
 	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(PlayerController->GetHUD());
 
-	MyGameHUD->RemovWidget(EWidgetName::MainMenu);
+	MyGameHUD->CheckWidgetArray(MyGameHUD->CheckWidgetClass(EWidgetName::MainMenu))->SetVisibility(ESlateVisibility::Hidden);;
 	MyGameInstance->ShowOptionMenu();
 }
 

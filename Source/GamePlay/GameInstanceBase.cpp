@@ -11,6 +11,8 @@
 
 void UGameInstanceBase::Init()
 {
+	Super::Init();
+
 	if (IOnlineSubsystem* SubSystem = IOnlineSubsystem::Get())
 	{
 		SessionInterface = SubSystem->GetSessionInterface();
@@ -38,7 +40,8 @@ void UGameInstanceBase::ShowMainMenu()
 	
 	if (BaseHUD)
 	{
-		BaseHUD->CreateWidget(EWidgetName::MainMenu);
+		UUserWidget* CurrentWidget = BaseHUD->CheckWidgetArray(BaseHUD->CheckWidgetClass(EWidgetName::MainMenu));
+		CurrentWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 
@@ -48,7 +51,8 @@ void UGameInstanceBase::ShowServerMenu()
 	
 	if (BaseHUD)
 	{
-		BaseHUD->CreateWidget(EWidgetName::ServerMenu);
+		UUserWidget* CurrentWidget = BaseHUD->CheckWidgetArray(BaseHUD->CheckWidgetClass(EWidgetName::ServerMenu));
+		CurrentWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 
@@ -73,24 +77,12 @@ void UGameInstanceBase::ShowHostMenu()
 
 	if (BaseHUD)
 	{
-		BaseHUD->CreateWidget(EWidgetName::HostMenu);
+		UUserWidget* CurrentWidget = BaseHUD->CheckWidgetArray(BaseHUD->CheckWidgetClass(EWidgetName::HostMenu));
+		CurrentWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 
-void UGameInstanceBase::SaveDataCheck()
-{
-	bool bCheck = UGameplayStatics::DoesSaveGameExist(SaveDataName.ToString(), 0);
 
-	if (bCheck)
-	{
-		ShowMainMenu();
-	}
-	else
-	{
-		ShowOptionMenu();
-		UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
-	}
-}
 
 void UGameInstanceBase::ShowOptionMenu()
 {
@@ -98,14 +90,17 @@ void UGameInstanceBase::ShowOptionMenu()
 
 	if (BaseHUD)
 	{
-		BaseHUD->CreateWidget(EWidgetName::OptionMenu);
+		UUserWidget* CurrentWidget = BaseHUD->CheckWidgetArray(BaseHUD->CheckWidgetClass(EWidgetName::OptionMenu));
+		CurrentWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 
 void UGameInstanceBase::CreateGameSession()
 {
 	FName SessionName = UKismetStringLibrary::Conv_StringToName(SaveDataName.ToString());
+
 	FOnlineSessionSettings SessionSetting;
+	SessionSetting.bAllowJoinInProgress = true;
 	SessionSetting.bAllowInvites = true;
 	SessionSetting.bIsDedicated = false;
 	SessionSetting.bIsLANMatch = bEnableLan;
@@ -119,12 +114,18 @@ void UGameInstanceBase::CreateGameSession()
 
 void UGameInstanceBase::OnCreateSessionComplete(FName Servername, bool bSucceded)
 {
-	GEngine->AddOnScreenDebugMessage(
-		-1,
-		15.0f,
-		FColor::Blue,
-		FString(TEXT("Succed make Session"))
-	);
+	UE_LOG(LogTemp, Warning, TEXT("Succed : %d"), bSucceded);
+	if (bSucceded)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			-1,
+			15.0f,
+			FColor::Blue,
+			FString(TEXT("Succed make Session"))
+		);
+		GetWorld()->ServerTravel("/Game/Blueprint/AllLevels/Lobby?listen");
+	}
+		
 }
 
 void UGameInstanceBase::OnFindSessionComplete(bool bSucceded)
@@ -145,7 +146,7 @@ void UGameInstanceBase::OnFindSessionComplete(bool bSucceded)
 		{
 			if (Result.Session.SessionSettings.NumPublicConnections != Result.Session.SessionSettings.NumPublicConnections - Result.Session.NumOpenPublicConnections)
 			{
-				//AvailableSession = Result.Session;
+				AvailableSession = Result.Session;
 			}
 		}
 	}

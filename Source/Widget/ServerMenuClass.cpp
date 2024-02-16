@@ -101,58 +101,43 @@ void UServerMenuClass::ClickedBackButton()
 	APlayerController* PlayerController = Cast<APlayerController>(GetOwningPlayerPawn()->GetController());
 	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(PlayerController->GetHUD());
 
-	MyGameHUD->RemovWidget(EWidgetName::ServerMenu);
+	MyGameHUD->CheckWidgetArray(MyGameHUD->CheckWidgetClass(EWidgetName::ServerMenu))->SetVisibility(ESlateVisibility::Hidden);;
 	MyGameInstance->ShowMainMenu();
 }
 
 void UServerMenuClass::ClickedAcceptButton()
 {
-	ServerMenu.Siwtcher->ActiveWidgetIndex = 1;
-
-	if (bFindSession)
-	{
-		APlayerController* PlayerController = Cast<APlayerController>(GetOwningPlayerPawn()->GetController());
-		AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(PlayerController->GetHUD());
-
-		MyGameHUD->RemovWidget(EWidgetName::ServerMenu);
-		MyGameInstance->JoinGameSession();
-	}
-	else
-	{
-		bool bLanEnable = false;
-		int32 Players = 8;
-
-		if (ServerMenu.LanTextBlock->GetText().ToString().Compare("LAN"))
-			bLanEnable = true;
-
-		MyGameInstance->LaunchLobby(Players, bLanEnable, FText::FromString(""));
-	}
+	ServerMenu.Siwtcher->SetActiveWidgetIndex(0);
+	
+	SuccessFindSession();
 }
 
 void UServerMenuClass::DisplaySession()
 {
-	ServerMenu.Siwtcher->ActiveWidgetIndex = 1;
-	UKismetSystemLibrary::K2_SetTimerDelegate(TimerDelegate, 1.0f, false);
+	ServerMenu.Siwtcher->SetActiveWidgetIndex(1);
+	FTimerHandle TimerHandle = UKismetSystemLibrary::K2_SetTimerDelegate(TimerDelegate, 1.0f, false);
 }
 
 void UServerMenuClass::SuccessFindSession()
 {
-	bFindSession = MyGameInstance->bFindSession;
+	AGameHUDBase* MyGameHUD = Cast<AGameHUDBase>(GetOwningPlayer()->GetHUD());
+	MyGameInstance->JoinGameSession();
 
-	if (bFindSession)
+	if (MyGameInstance->bFindSession)
 	{
-		ServerMenu.Siwtcher->ActiveWidgetIndex = 2;
+		ServerMenu.Siwtcher->SetActiveWidgetIndex(2);
 		DisplaySession();
 	}
 	else
 	{
-		ServerMenu.Siwtcher->ActiveWidgetIndex = 0;
+		ServerMenu.Siwtcher->SetActiveWidgetIndex(0);
+		
 	}
 }
 
 void UServerMenuClass::FailureFindSession()
 {
-	ServerMenu.Siwtcher->ActiveWidgetIndex = 0;
+	ServerMenu.Siwtcher->SetActiveWidgetIndex(0);
 }
 
 void UServerMenuClass::TimerFunction()
