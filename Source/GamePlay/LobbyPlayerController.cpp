@@ -81,7 +81,12 @@ void ALobbyPlayerController::ShowLodingScreen_Implementation()
 	LobbyHUD->ShowLodingScreen();
 }
 
-void ALobbyPlayerController::UpdateNumberOfPlayer(int currentPlayer, int MaxPlayer)
+void ALobbyPlayerController::UpdateAvailableCharacter_Implementation(const TArray<bool>& AvailableCharacters)
+{
+
+}
+
+void ALobbyPlayerController::UpdateNumberOfPlayer_Implementation(int currentPlayer, int MaxPlayer)
 {
 	ALobbyGameHUD* LobbyHUD = Cast<ALobbyGameHUD>(GetHUD());
 	LobbyHUD->ShowLodingScreen();

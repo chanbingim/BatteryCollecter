@@ -17,14 +17,7 @@ class GAMEPLAY_API UGameInstanceBase : public UGameInstance
 	GENERATED_BODY()
 
 private :
-	UPROPERTY(VisibleInstanceOnly,replicated, Category = "Server")
-	int	NumberOfPlayer = 2;
-
-	UPROPERTY(VisibleInstanceOnly, replicated, Category = "Server")
-	bool bEnableLan;
-
-	UPROPERTY(VisibleInstanceOnly, replicated, Category = "Server")
-	FText ServerName;
+	
 protected :
 	IOnlineSessionPtr SessionInterface;
 	TSharedPtr<FOnlineSessionSearch> SessionSearch;
@@ -35,6 +28,15 @@ protected :
 	virtual void OnDestroySessionComplete(FName Servername, bool bSuccede);
 	virtual void Init() override;
 public:
+	UPROPERTY(VisibleInstanceOnly, replicated, Category = "Server")
+	int	NumberOfPlayer = 2;
+
+	UPROPERTY(VisibleInstanceOnly, replicated, Category = "Server")
+	bool bEnableLan;
+
+	UPROPERTY(VisibleInstanceOnly, replicated, Category = "Server")
+	FText ServerName;
+
 	FOnlineSession AvailableSession;
 
 	bool bFindSession = false;

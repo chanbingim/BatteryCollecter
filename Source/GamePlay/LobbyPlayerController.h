@@ -46,7 +46,10 @@ public:
 	UFUNCTION(Client, Reliable)
 	virtual void ShowLodingScreen();
 
-	UFUNCTION()
+	UFUNCTION(Client, Reliable)
+	void UpdateAvailableCharacter(const TArray<bool>& AvailableCharacters);
+
+	UFUNCTION(Client, Reliable)
 	void UpdateNumberOfPlayer(int currentPlayer, int MaxPlayer);
 
 	UFUNCTION()
