@@ -9,6 +9,18 @@ ALoobyGameModeBaseClass::ALoobyGameModeBaseClass()
 
 }
 
+void ALoobyGameModeBaseClass::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps)
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ALoobyGameModeBaseClass, AllPlayerControllers);
+}
+
+void ALoobyGameModeBaseClass::LaunchTheGame()
+{
+		
+}
+
 void ALoobyGameModeBaseClass::SwapCharacter_Implementation(APlayerController* PlayerController, ACharacter* Characterclass, bool ChangedStatus)
 {
 	GEngine->AddOnScreenDebugMessage(

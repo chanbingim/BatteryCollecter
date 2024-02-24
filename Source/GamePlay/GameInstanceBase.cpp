@@ -21,6 +21,7 @@ void UGameInstanceBase::Init()
 		{
 			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UGameInstanceBase::OnCreateSessionComplete);
 			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UGameInstanceBase::OnFindSessionComplete);
+			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UGameInstanceBase::OnDestroySessionComplete);
 		}
 	}
 }
@@ -110,6 +111,7 @@ void UGameInstanceBase::CreateGameSession()
 
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
 	SessionInterface->CreateSession(*LocalPlayer->GetPreferredUniqueNetId(),SessionName,SessionSetting);
+	
 }
 
 void UGameInstanceBase::OnCreateSessionComplete(FName Servername, bool bSucceded)
@@ -152,6 +154,11 @@ void UGameInstanceBase::OnFindSessionComplete(bool bSucceded)
 	}
 }
 
+void UGameInstanceBase::OnDestroySessionComplete(FName Servername, bool bSuccede)
+{
+
+}
+
 void UGameInstanceBase::JoinGameSession()
 {
 	ShowLoadingScreen();
@@ -162,4 +169,10 @@ void UGameInstanceBase::JoinGameSession()
 
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
 	SessionInterface->FindSessions(*LocalPlayer->GetPreferredUniqueNetId(), SessionSearch.ToSharedRef());
+}
+
+void UGameInstanceBase::DestoryGameSession(APlayerController* Player)
+{
+	FName SessionName = UKismetStringLibrary::Conv_StringToName(SaveDataName.ToString());
+	SessionInterface->DestroySession(SessionName);
 }

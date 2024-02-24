@@ -43,7 +43,7 @@ void AGameHUDBase::BeginPlay()
 void AGameHUDBase::AddgWidget(EWidgetName Name)
 {
 	TSubclassOf<class UUserWidget> TempWidgetClass = CheckWidgetClass(Name);
-	UUserWidget* TempWidget = nullptr;
+	UUserWidget* TempWidget = CheckWidgetArray(TempWidgetClass);
 
 	if (TempWidgetClass == nullptr)
 		return;

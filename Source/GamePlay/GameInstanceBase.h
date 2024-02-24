@@ -32,6 +32,7 @@ protected :
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps);
 	virtual void OnCreateSessionComplete(FName Servername, bool bSucceded);
 	virtual void OnFindSessionComplete(bool bSucceded);
+	virtual void OnDestroySessionComplete(FName Servername, bool bSuccede);
 	virtual void Init() override;
 public:
 	FOnlineSession AvailableSession;
@@ -61,6 +62,9 @@ public:
 
 	UFUNCTION()
 	void JoinGameSession();
+
+	UFUNCTION()
+	void DestoryGameSession(APlayerController* Player);
 
 	UFUNCTION(BlueprintCallable)
 	FText GetPlayerSaveDataName() { return SaveDataName; }
